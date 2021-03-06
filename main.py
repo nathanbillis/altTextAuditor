@@ -6,9 +6,10 @@ csvPages = 'pages.csv'
 csvLocation = 'altTextFails.csv'
 
 with open(csvPages, newline='') as csvfile:
+    # read in location of pages
     reader = csv.DictReader(csvfile)
 
-    # Open CSV and write links to the CSV File
+    # Open CSV and write header to the CSV File
     with open(csvLocation, mode='w') as csvFile:
         fieldnames = ['page_title', 'page_address', 'image' ]
         csv_writer = csv.DictWriter(csvFile, fieldnames=fieldnames)
@@ -19,24 +20,22 @@ with open(csvPages, newline='') as csvfile:
             try:
 
                 http = urllib3.PoolManager()
-
                 response = http.request('GET', webpage)
                 soup = BeautifulSoup(response.data, "html.parser")
 
-                rawTitle = soup.title.string
-                rawTitleSplit = rawTitle.split(" |")
-                pageTitle = '"' + rawTitleSplit[0] + '"'
+                # Find page title
+                pageTitle = soup.title.string
 
                 # Select all the images
                 images = soup.findAll('img', alt=False)
 
                 for image in images:
-                    # for iframe
                     csv_writer.writerow({'page_title': pageTitle,'page_address': webpage,'image': image})
 
                 # Output final count for manual verification
-                print("Written to CSV. There are " + str(len(images)) + " images found!")
+                print("Written to CSV. There are " + str(len(images)) + " images found without Alt Text!")
 
 
             except:
+                # Prints about the error but doesn't handle it or give you anything useful!
                 print("Oops! Error!")
