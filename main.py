@@ -4,7 +4,6 @@ import urllib3.request
 
 csvPages = 'pages.csv'
 csvLocation = 'altTextFails.csv'
-tempFileLocation = 'tempFile.html'
 
 with open(csvPages, newline='') as csvfile:
     reader = csv.DictReader(csvfile)
