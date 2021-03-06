@@ -1,0 +1,8 @@
+
+venv/
+
+.idea/
+
+pages.csv
+
+altTextFails.csv
